@@ -1,0 +1,2 @@
+rac = "out/"
+folder = "score/"
