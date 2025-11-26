@@ -9,6 +9,8 @@ if os.path.exists(rac+"jpg"):
     shutil.rmtree(rac+"jpg")
 os.mkdir(rac+"jpg")
 
+## GIF generation
+
 if os.path.exists(rac+"test.txt"):
     cpt = grids("test.txt",3)
     mean_grid("test.txt",cpt,3)
@@ -17,6 +19,8 @@ if os.path.exists(rac+"test.txt"):
     frame_one = frames[0]
     frame_one.save(rac+"test.gif", format="GIF", append_images=frames,save_all=True, duration=80, loop=1)
 
+
+## Analyse of main return
 
 # if os.path.exists(rac+folder) and listdir(rac+folder) != []:
 #     dico = {}
