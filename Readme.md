@@ -18,32 +18,45 @@ Le `Makefile` simplifie la compilation et l'exécution des simulations.
 
 ## Comment générer un GIF d'une simulation
 
-La méthode la plus simple est d'utiliser la cible `all_t` du `Makefile`.
+La méthode la plus simple est d'utiliser la cible `all_t` du `Makefile`, qui compile, exécute la simulation de test et génère le fichier `out/test.gif`.
 
-1.  **Modifiez les paramètres de la simulation (optionnel) :**
-    -   Ouvrez le fichier `tests/tests.c`.
-    -   Vous pouvez y ajuster l'**accuracy**, le **nombre de gardes** (`number`), et le **comportement** des gardes.
-    -   Pour modifier l'**accuracy**, changez la valeur dans l'appel à `test_simulate_path` dans la fonction `main` :
+Pour personnaliser cette simulation de test, vous devez modifier le fichier `tests/tests.c`.
+
+1.  **Ouvrez `tests/tests.c`.** Les principaux paramètres se trouvent dans la fonction `test_simulate_path`.
+
+2.  **Ajustez les paramètres des entités :**
+    *   **Nombre de gardes :** Modifiez la variable `number`.
         ```c
-        // Ligne 190 dans tests/tests.c
+        // dans tests/tests.c
+        int number = 180; // La simulation se lancera avec 180 gardes.
+        ```
+    *   **Comportement des gardes :** Modifiez le deuxième argument de `new_guard_list`. La liste des comportements (1: rotation, 2: random_line, etc.) se trouve plus bas dans ce README.
+        ```c
+        // dans tests/tests.c
+        guard_list* guards = new_guard_list(number, 5, ROTATION_SPEED, 1, 4); // Comportement 5 (mousaid).
+        ```
+    *   **Position d'un garde :** Pour tester une configuration précise, vous pouvez fixer la position d'un garde en décommentant et modifiant la ligne `moveto`.
+        ```c
+        // dans tests/tests.c
+        // moveto(guards->tab[0]->pos, 50, 50); // Déplace le garde 0 en (50, 50)
+        ```
+
+3.  **Ajustez les paramètres de la simulation :**
+    La fonction `simulate` est appelée vers la fin de `test_simulate_path`. Vous pouvez en modifier les arguments pour plus de personnalisation.
+    `simulate(scene, guards, bot, 5, n, true, f)`
+    *   **`speed` (4ème argument) :** Contrôle la durée maximale de la simulation (`durée_max = hauteur * speed`). Augmenter cette valeur donne plus de temps au joueur pour atteindre la sortie. La valeur est ici `5`.
+    *   **`accuracy` (5ème argument, variable `n`) :** C'est la profondeur de l'anticipation du joueur. Ce paramètre est défini dans la fonction `main` de `tests/tests.c`.
+        ```c
+        // dans tests/tests.c, fonction main()
         test_simulate_path(100); // L'accuracy est ici de 100.
         ```
-    -   Pour modifier le **nombre de gardes**, changez la variable `number` au début de la fonction `test_simulate_path`:
-        ```c
-        // Ligne 175 dans tests/tests.c
-        int number = 150; // La simulation se lancera avec 150 gardes.
-        ```
-    -   Pour modifier le **comportement des gardes**, changez le deuxième argument de `new_guard_list` dans la fonction `test_simulate_path` (la liste des comportements se trouve plus bas).
-        ```c
-        // Ligne 176 dans tests/tests.c
-        guard_list* guards = new_guard_list(number, 3, ROTATION_SPEED, 1, 4); // Comportement 3 (corridor).
-        ```
+    *   **`export` (6ème argument) :** C'est un booléen (`true` ou `false`). Il doit être à `true` pour que le programme écrive les données de la simulation dans un fichier, nécessaire à la création du GIF.
 
-2.  **Exécutez la commande `make all_t` :**
+4.  **Exécutez la commande `make all_t` :**
     ```bash
     make all_t
     ```
-    Cette commande s'occupe de tout : compilation, exécution et création du GIF. Le résultat est sauvegardé dans `out/test.gif`.
+    Après avoir sauvegardé vos modifications dans `tests/tests.c`, cette commande relancera le processus complet.
 
 ## Comment lancer des simulations en lot
 
