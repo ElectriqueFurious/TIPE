@@ -12,16 +12,17 @@ Le `Makefile` simplifie la compilation et l'exécution des simulations.
 
 -   `make tests`: Compile le programme de simulation unique et génère l'exécutable `tests.out`.
 -   `make main`: Compile le programme de simulation en lot et génère l'exécutable `main.out`.
--   `make all_t`: **Raccourci pour générer un GIF.** Compile et exécute la simulation de test, puis lance le script Python pour créer `out/test.gif`.
--   `make all_m`: **Raccourci pour lancer une simulation en lot.** Compile et exécute `main.out` avec un jeu de paramètres par défaut (`20 1 200 5 20`). **Attention**, pour visualiser les graphiques de résultats, il faut ensuite modifier manuellement `out/main.py`.
+-   `make all_t`: **Raccourci tout-en-un pour générer un GIF.** Compile et exécute la simulation de test, puis génère le fichier `out/test.gif`.
+-   `make all_m`: **Raccourci tout-en-un pour l'analyse.** Lance une simulation en lot avec des paramètres par défaut, puis génère et affiche les graphiques d'analyse.
 -   `make clean`: Supprime les fichiers objets, les exécutables et les fichiers de résultats (`.txt`).
 
 ## Comment générer un GIF d'une simulation
 
-La méthode la plus simple est d'utiliser la cible `all_t` du makefile.
+La méthode la plus simple est d'utiliser la cible `all_t` du `Makefile`.
 
 1.  **Modifiez les paramètres de la simulation (optionnel) :**
     -   Ouvrez le fichier `tests/tests.c`.
+    -   Vous pouvez y ajuster l'**accuracy**, le **nombre de gardes** (`number`), et le **comportement** des gardes.
     -   Pour modifier l'**accuracy**, changez la valeur dans l'appel à `test_simulate_path` dans la fonction `main` :
         ```c
         // Ligne 190 dans tests/tests.c
@@ -42,44 +43,61 @@ La méthode la plus simple est d'utiliser la cible `all_t` du makefile.
     ```bash
     make all_t
     ```
-    Cette commande s'occupe de tout : compilation, exécution du programme C, et création du GIF `out/test.gif` via le script Python. Assurez-vous que la bonne section du code de `out/main.py` est active (voir ci-dessous).
+    Cette commande s'occupe de tout : compilation, exécution et création du GIF. Le résultat est sauvegardé dans `out/test.gif`.
 
 ## Comment lancer des simulations en lot
 
-1.  **Utilisez la commande `make main` pour compiler.**
-    ```bash
-    make main
-    ```
+La méthode la plus simple pour lancer des simulations en lot est de passer par la cible `all_m` du `Makefile`, qui s'occupe de tout (compilation, exécution, analyse).
 
-2.  **Exécutez le programme `main.out` avec les arguments souhaités :**
-    ```bash
-    ./main.out k n m pas accuracy
-    ```
-    -   `k` : Le nombre de simulations à exécuter pour chaque configuration.
-    -   `n` et `m` : La plage du nombre de gardes à simuler (de `n` à `m`).
-    -   `pas` : Le pas d'incrémentation du nombre de gardes entre `n` et `m`.
-    -   `accuracy` : La "précision" du joueur (nombre de tours anticipés).
+Pour configurer votre lot de simulations, vous pouvez directement modifier les paramètres dans le `Makefile`.
 
-    Par exemple, pour faire 100 simulations pour 10 à 50 gardes (par pas de 10) avec une précision de 100 :
-    ```bash
-    ./main.out 100 10 50 10 100
+1.  **Ouvrez le fichier `Makefile`.**
+
+2.  **Modifiez les variables de simulation** au début du fichier :
+    ```makefile
+    # Parameters for all_m
+    K        = 20
+    N        = 1
+    M        = 200
+    PAS      = 5
+    ACCURACY = 20
     ```
-    Les résultats (scores) seront enregistrés dans des fichiers texte dans le répertoire `out/score/`. Pour visualiser les graphiques, modifiez et exécutez `out/main.py`.
+    -   `K`: Le nombre de simulations à exécuter pour chaque configuration.
+    -   `N`, `M`: La plage pour le nombre de gardes (de N à M).
+    -   `PAS`: Le pas d'incrémentation pour le nombre de gardes.
+    -   `ACCURACY`: La précision de l'algorithme du joueur (nombre de tours anticipés).
+
+3.  **Exécutez la commande `make all_m` :**
+    ```bash
+    make all_m
+    ```
+    Cette commande lancera les simulations avec vos paramètres et générera les graphiques d'analyse correspondants.
+
+4.  **(Optionnel) Changer le type de simulation en lot :**
+    Si vous souhaitez exécuter un autre type de simulation en lot (par exemple, pour tester l'impact de la vitesse de rotation des gardes), vous pouvez modifier le fichier `main.c`.
+    -   Ouvrez le fichier `main.c`.
+    -   Dans la fonction `main`, vous pouvez commenter la ligne `simulate_from_to(...)` et décommenter la ligne `find_angle_rotation(...)` pour changer le type de simulation.
+        ```c
+        // Exemple dans main.c
+        simulate_from_to(k,n,m,pas,MAX_BEHAVE,accuracy);
+        // find_angle_rotation(0,20,2,k,n,m,pas,accuracy);
+        ```
+    -   Vous pouvez également créer votre propre fonction de simulation sur le modèle de `simulate_from_to` ou `find_angle_rotation` et l'appeler dans le `main`.
+    -   Après avoir modifié `main.c`, relancez `make all_m` pour compiler et exécuter vos nouvelles simulations.
 
 ## Scripts Python d'Analyse et de Visualisation
 
-Le dossier `out/` contient plusieurs scripts Python pour traiter et visualiser les données générées par les simulations.
+Le dossier `out/` contient plusieurs scripts Python pour traiter et visualiser les données.
 
-> **⚠️ Important :** Le script `out/main.py` doit être modifié manuellement. Il ne peut exécuter qu'une seule tâche à la fois : soit la génération de GIF, soit l'analyse de données.
-> -   **Pour générer un GIF** (après `make all_t`), assurez-vous que le premier bloc de code (qui commence par `if os.path.exists(rac+"test.txt"):`) est **actif** et que le second bloc (celui pour l'analyse) est **commenté**.
-> -   **Pour afficher les graphiques d'analyse** (après `make all_m`), vous devez **commenter** le premier bloc (génération de GIF) et **décommenter** le second.
+-   `main.py`: Le script principal qui prend un argument en ligne de commande :
+    -   `gif`: Lit `test.txt` pour créer un GIF animé.
+    -   `plot`: Lit les données dans `out/score/` pour afficher des graphiques de performance.
+    Les commandes du `Makefile` (`all_t`, `all_m`) utilisent ces arguments automatiquement.
+-   `sublim.py`: Bibliothèque pour la création d'images à partir des données de simulation.
+-   `analyses.py`: Bibliothèque pour l'analyse statistique des scores et la génération des graphiques avec `matplotlib`.
+-   `const.py`: Fichier de constantes définissant les chemins des dossiers.
 
--   `main.py`: C'est le script principal à exécuter. Il peut soit générer un GIF, soit lancer l'analyse des scores et afficher des graphiques, selon la partie du code qui est active.
--   `sublim.py`: Utilisé par `main.py` pour la création d'images. Il contient les fonctions qui lisent le fichier `test.txt` et génèrent les images `.bmp` individuelles qui composent le GIF.
--   `analyses.py`: Contient toute la logique pour l'analyse des données des simulations en lot. Il lit les fichiers de score, calcule des moyennes, des taux de réussite et génère des graphiques à l'aide de `matplotlib`.
--   `const.py`: Fichier de constantes qui définit les chemins vers les dossiers de sortie utilisés par les autres scripts.
-
-Pour l'analyse de données, les bibliothèques `matplotlib` et `Pillow` sont nécessaires. Vous pouvez les installer via pip :
+Pour utiliser ces scripts, les bibliothèques `matplotlib` et `Pillow` sont nécessaires :
 ```bash
 pip install matplotlib Pillow
 ```

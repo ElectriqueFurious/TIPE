@@ -5,6 +5,13 @@ OPTIMISATIONLEVEL = -O3
 
 PARAM = $(CFLAGS) $(OPTIMISATIONLEVEL) $(OPTION)
 
+# Parameters for all_m
+K        = 20
+N        = 1
+M        = 200
+PAS      = 5
+ACCURACY = 20
+
 ENTITY = entity/guard.o entity/player.o entity/position.o
 SCENE = scene/scene.o scene/simulation.o
 TOOLS = tools/draw.o tools/graph.o tools/out.o tools/priority.o tools/stack.o
@@ -28,8 +35,8 @@ clean : cleano
 
 all_t : tests
 	./tests.out
-	python3 ./out/main.py
+	python3 ./out/main.py gif
 
 all_m : main
-	./main.out 20 1 200 5 20
-	python3 ./out/main.py
+	./main.out $(K) $(N) $(M) $(PAS) $(ACCURACY)
+	python3 ./out/main.py plot
