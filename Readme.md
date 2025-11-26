@@ -98,6 +98,17 @@ Pour configurer votre lot de simulations, vous pouvez directement modifier les p
     -   Vous pouvez également créer votre propre fonction de simulation sur le modèle de `simulate_from_to` ou `find_angle_rotation` et l'appeler dans le `main`.
     -   Après avoir modifié `main.c`, relancez `make all_m` pour compiler et exécuter vos nouvelles simulations.
 
+5.  **(Optionnel) Changer la plage de comportements simulés :**
+    Par défaut, la simulation en lot (`simulate_from_to`) teste une plage de comportements de gardes qui est fixée directement dans le code. Vous pouvez la modifier pour analyser uniquement les comportements qui vous intéressent.
+    -   Ouvrez le fichier `main.c`.
+    -   Allez dans la fonction `simulate_from_to`.
+    -   Modifiez les 3ème et 4ème arguments de l'appel à `k_simulation` pour définir la plage de comportements (par exemple, de 1 à 4).
+        ```c
+        // dans main.c, fonction simulate_from_to
+        k_simulation(k, i, 1, 4, accuracy); // Simule les comportements 1, 2, 3 et 4
+        ```
+    -   Le programme utilise aussi une constante `MAX_BEHAVE` au début du fichier. Actuellement, elle n'est pas utilisée par `simulate_from_to`, mais vous pourriez modifier la fonction pour qu'elle utilise `MAX_BEHAVE` comme borne supérieure si vous le souhaitez (`k_simulation(k, i, 1, range, accuracy)`).
+
 ## Scripts Python d'Analyse et de Visualisation
 
 Le dossier `out/` contient plusieurs scripts Python pour traiter et visualiser les données.
@@ -123,7 +134,9 @@ Ce paramètre, passé à l'exécutable `main` ou modifié dans `tests.c`, est cr
 Concrètement, le programme pré-calcule les `accuracy` prochains mouvements des gardes. L'algorithme de recherche de chemin (A*) du joueur utilise ensuite ces positions futures pour trouver un chemin qui n'est pas seulement sûr maintenant, mais qui le restera aussi pour les `accuracy` prochains tours.
 
 -   **Une `accuracy` faible** rendra le joueur "myope" : il pourrait s'engager dans un chemin qui semble sûr mais qui deviendra un piège.
--   **Une `accuracy` élevée** permettra au joueur de trouver des stratégies complexes pour éviter les gardes, mais augmentera le temps de calcul.
+-   **Une `accuracy` élevée** permettra au joueur de trouver des stratégies complexes pour éviter les gardes, mais augmentera considérablement le temps de calcul.
+
+**Attention à la performance :** L'impact de l' `accuracy` sur le temps de calcul peut être très important. Dans le pire des cas, l'augmentation est exponentielle. Si une situation est simple (peu de gardes, chemin évident), n'importe quel niveau d'accuracy sera rapide. En revanche, pour une même simulation très complexe, le temps de calcul peut plus que doubler en passant d'une `accuracy` de 100 à 150. Il est donc conseillé de commencer avec des valeurs faibles et d'augmenter progressivement.
 
 ### Comportements des gardes
 
