@@ -58,7 +58,29 @@ La méthode la plus simple est d'utiliser la cible `all_t` du makefile.
 
     Vous pouvez aussi utiliser `make all_m` qui exécute une simulation avec des paramètres prédéfinis.
 
+## Scripts Python d'Analyse et de Visualisation
+
+Le dossier `out/` contient plusieurs scripts Python pour traiter et visualiser les données générées par les simulations.
+
+-   `main.py`: C'est le script principal à exécuter. Il peut soit générer un GIF (s'il trouve un fichier `test.txt`), soit (en décommentant les lignes appropriées) lancer l'analyse des scores et afficher des graphiques.
+-   `sublim.py`: Utilisé par `main.py` pour la création d'images. Il contient les fonctions qui lisent le fichier `test.txt` et génèrent les images `.bmp` individuelles qui composent le GIF.
+-   `analyses.py`: Contient toute la logique pour l'analyse des données des simulations en lot. Il lit les fichiers de score, calcule des moyennes, des taux de réussite et génère des graphiques à l'aide de `matplotlib`.
+-   `const.py`: Fichier de constantes qui définit les chemins vers les dossiers de sortie utilisés par les autres scripts.
+
+Pour l'analyse de données, la bibliothèque `matplotlib` est nécessaire. Vous pouvez l'installer via pip :
+```bash
+pip install matplotlib
+```
+
 ## Configuration
+
+### Le paramètre `accuracy`
+Ce paramètre, passé à l'exécutable `main` ou modifié dans `tests.c`, est crucial pour l'intelligence du joueur. Il représente le **nombre de tours de jeu que le joueur peut anticiper**.
+
+Concrètement, le programme pré-calcule les `accuracy` prochains mouvements des gardes. L'algorithme de recherche de chemin (A*) du joueur utilise ensuite ces positions futures pour trouver un chemin qui n'est pas seulement sûr maintenant, mais qui le restera aussi pour les `accuracy` prochains tours.
+
+-   **Une `accuracy` faible** rendra le joueur "myope" : il pourrait s'engager dans un chemin qui semble sûr mais qui deviendra un piège.
+-   **Une `accuracy` élevée** permettra au joueur de trouver des stratégies complexes pour éviter les gardes, mais augmentera le temps de calcul.
 
 ### Comportements des gardes
 
