@@ -1,0 +1,67 @@
+# Fichier .gitignore combiné pour projets C et Python
+
+## 🐍 Fichiers et Dossiers Python Standards
+# Environnements Virtuels
+venv/
+.venv/
+env/
+
+# Fichiers de compilation et de cache
+__pycache__/
+*.pyc
+*.pyd
+*.so
+*.egg
+.mypy_cache/
+.pytest_cache/
+.coverage
+
+# Dossiers d'installation (pour les packages)
+build/
+dist/
+*.egg-info/
+
+## ⚙️ Fichiers et Dossiers C Standards
+# Objets et exécutables compilés
+*.o
+*.obj
+*.out
+*.exe
+*.dll
+*.so
+*.dylib
+a.out
+
+# Dossiers de build (issus de make, cmake, etc.)
+/bin/
+/obj/
+/build/
+/tmp/
+CMakeCache.txt
+CMakeFiles/
+CTestTestfile.cmake
+cmake_install.cmake
+
+## 🖼️ Fichiers de sortie, Médias, et Archives
+out/*.txt
+out/**/*.txt
+out/**/*.gif
+out/**/*.bmp
+*.zip
+out/rotation/
+out/snake_1_a_180/
+out/jpg/
+out/score/
+
+
+## 💻 Fichiers IDE et Editeur (Communs)
+# VSCode
+.vscode/
+
+# JetBrains / IntelliJ / PyCharm
+.idea/
+
+# Vim/Nano/Emacs swap files
+*~
+# Sauvegardes
+*.bak
