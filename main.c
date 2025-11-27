@@ -91,10 +91,10 @@ void* thread_simulation(void* parameter){
         file = new_name(args->behave_angle,args->number,SOURCE_NAME_1);
     }
     else{
-        lab = copy_lab(args->storage,args->k,6,args->behave_angle);//Changer le comportement
+        lab = copy_lab(args->storage,args->k,6,args->behave_angle);//Change behavior
         file = new_name(args->behave_angle,args->number,SOURCE_NAME_2);
     }
-    FILE* score = fopen(file,"w");//pour conserver les précédents
+    FILE* score = fopen(file,"w");//to preserve the previous ones
 
     for(int i=0; i<args->k; i++){
         scene_object* scene = new_scene(WIDTH,HEIGHT,INIT);
@@ -115,7 +115,7 @@ void* thread_simulation(void* parameter){
 }
 
 void k_simulation(int k,int number,int behave_start,int behave_end, int accuracy){
-    printf("number : %d\n",number);
+    printf("number: %d\n",number);
     guard_list** storage = malloc(k*sizeof(guard_list*));
     for(int i=0; i<k; i++){
         storage[i] = new_guard_list(number,0,ROTATION_SPEED,1,4);
@@ -140,12 +140,12 @@ void k_simulation(int k,int number,int behave_start,int behave_end, int accuracy
 
 void simulate_from_to(int k, int n, int m, int pas, int range, int accuracy){
     for(int i=n; i<=m; i+= pas){
-        k_simulation(k,i,5,6,accuracy); //Selectionner la Range
+        k_simulation(k,i,5,6,accuracy); //Select the Range
     }
 }
 
 void k_simulation_rotation(int k,int number,int angle_start,int angle_end, int pas, int accuracy){
-    printf("number : %d\n",number);
+    printf("number: %d\n",number);
     guard_list** storage = malloc(k*sizeof(guard_list*));
     for(int i=0; i<k; i++){
         storage[i] = new_guard_list(number,0,ROTATION_SPEED,1,4);
@@ -178,14 +178,14 @@ int main(int argc, char **argv){
     int seed = time(NULL);
     // seed = 1716554888;
     srand(seed);
-    printf("Seed : %d\n",seed);
+    printf("Seed: %d\n",seed);
 
     if(argc < 6){
-        printf("\nWARRING !!!\n \
-        \nNeed 4 parametre (in this order) :\
+        printf("\nWARNING!!!\n \
+        \nNeed 5 parameters (in this order) :\
         \n\t-k : the number of simulation per situation\
-        \n\t-n and m : simule from n to m guards\
-        \n\t-pas : it means what it means\
+        \n\t-n and m : simulate from n to m guards\
+        \n\t-pas : it's the step\
         \n\t-accuracy : accuracy of the player\n\n");
     }
     else{

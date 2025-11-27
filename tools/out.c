@@ -57,7 +57,7 @@ void display_data(int** grid, int height, int width,FILE* file){
 
 void display_scene(scene_object* scene,FILE* file){
     if(file == stdout){
-        fprintf(file,"Scène en : %d par %d ; numéro de tour : %d\n\n",
+        fprintf(file,"Scene in: %d by %d; turn number: %d\n\n",
             scene->width,scene->height,scene->time);
         display_grid(scene->grid,scene->height,scene->width,file);
     }

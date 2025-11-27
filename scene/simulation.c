@@ -29,8 +29,10 @@ int simulate(scene_object* scene, guard_list* guard_list, player* bot, int speed
     for(time = 0;time<limit_time;time++){
         draw_position(bot->pos,scene,2);
         // draw_position(guard_list->tab[0]->pos,scene,2);
-        printf("Avancement : %d %c ; time = %d/%d\n"
+        if(export){
+            printf("Progress: %d%c; time = %d/%d\n"
                 ,100*bot->pos->y/scene->height,'%',time,limit_time);
+        }
         
         int curent_value = future[time%accuracy]->grid[bot->pos->y][bot->pos->x];
         if(curent_value == guard_list->color
@@ -57,7 +59,7 @@ int simulate(scene_object* scene, guard_list* guard_list, player* bot, int speed
         if(export){
             print_trajectory(future[(time+1)%accuracy],openList,5);
         }
-        //fin print path
+        //end print path
         position end = {bot->pos->x,scene->height-1};
         adjust_priority_list(openList,bot->pos,end);
         adjust_stack(closedList,time);

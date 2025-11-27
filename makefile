@@ -6,10 +6,10 @@ OPTIMISATIONLEVEL = -O3
 PARAM = $(CFLAGS) $(OPTIMISATIONLEVEL) $(OPTION)
 
 # Parameters for all_m
-K        = 20
-N        = 1
-M        = 200
-PAS      = 5
+K        = 10
+N        = 50
+M        = 100
+PAS      = 10
 ACCURACY = 20
 
 ENTITY = entity/guard.o entity/player.o entity/position.o

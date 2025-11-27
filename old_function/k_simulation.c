@@ -18,7 +18,7 @@ void k_simulation(int k,int number,int behave_start,int behave_end, int accuracy
             else{
                 fprintf(score,"%d\n",simulate(scene,lab[i],bot,10,accuracy,false,NULL));
             }
-            //multithreads ici
+            //multithreads there
 
             delete_scene(scene);
             delete_player(bot);

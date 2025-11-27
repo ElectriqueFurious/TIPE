@@ -13,13 +13,13 @@ void naive_path1(player* bot, scene_object** future){
         tomorrow = future[1];
     }
 
-    if(bot->pos->x == 0){//disjonction sur x
-        if(bot->pos->y == 0){//disjonction sur y
+    if(bot->pos->x == 0){// disjunction on x
+        if(bot->pos->y == 0){// disjunction on y
             if((today->grid[bot->pos->y+1][bot->pos->x] == today->init) && (tomorrow->grid[bot->pos->y+1][bot->pos->x] == tomorrow->init)){
                 move_up(bot->pos,today);
             }
             // else if((tomorrow->grid[bot->pos->y][bot->pos->x] == tomorrow->init)){
-            //     moveto(bot->pos,bot->pos->x,bot->pos->y);//dont move
+            //     moveto(bot->pos,bot->pos->x,bot->pos->y);// don't move
             // }
             else if((today->grid[bot->pos->y][bot->pos->x+1] == today->init) && (tomorrow->grid[bot->pos->y][bot->pos->x+1] == tomorrow->init)){
                 move_right(bot->pos,today);
@@ -30,7 +30,7 @@ void naive_path1(player* bot, scene_object** future){
                 move_up(bot->pos,today);
             }
             // else if((tomorrow->grid[bot->pos->y][bot->pos->x] == tomorrow->init)){
-            //     moveto(bot->pos,bot->pos->x,bot->pos->y);//dont move
+            //     moveto(bot->pos,bot->pos->x,bot->pos->y);// don't move
             // }
             else if((today->grid[bot->pos->y][bot->pos->x+1] == today->init) && (tomorrow->grid[bot->pos->y][bot->pos->x+1] == tomorrow->init)){
                 move_right(bot->pos,today);
@@ -46,7 +46,7 @@ void naive_path1(player* bot, scene_object** future){
                 move_up(bot->pos,today);
             }
             // else if((tomorrow->grid[bot->pos->y][bot->pos->x] == tomorrow->init)){
-            //     moveto(bot->pos,bot->pos->x,bot->pos->y);//dont move
+            //     moveto(bot->pos,bot->pos->x,bot->pos->y);// don't move
             // }
             else if((today->grid[bot->pos->y][bot->pos->x-1] == today->init) && (tomorrow->grid[bot->pos->y][bot->pos->x-1] == tomorrow->init)){
                 move_left(bot->pos,today);
@@ -57,7 +57,7 @@ void naive_path1(player* bot, scene_object** future){
                 move_up(bot->pos,today);
             }
             // else if((tomorrow->grid[bot->pos->y][bot->pos->x] == tomorrow->init)){
-            //     moveto(bot->pos,bot->pos->x,bot->pos->y);//dont move
+            //     moveto(bot->pos,bot->pos->x,bot->pos->y);// don't move
             // }
             else if((today->grid[bot->pos->y][bot->pos->x-1] == today->init) && (tomorrow->grid[bot->pos->y][bot->pos->x-1] == tomorrow->init)){
                 move_left(bot->pos,today);
@@ -74,7 +74,7 @@ void naive_path1(player* bot, scene_object** future){
 
             }
             // else if((tomorrow->grid[bot->pos->y][bot->pos->x] == tomorrow->init)){
-            //     moveto(bot->pos,bot->pos->x,bot->pos->y);//dont move
+            //     moveto(bot->pos,bot->pos->x,bot->pos->y);// don't move
             // }
             else if((today->grid[bot->pos->y][bot->pos->x+1] == today->init) && (tomorrow->grid[bot->pos->y][bot->pos->x+1] == tomorrow->init) && (today->grid[bot->pos->y][bot->pos->x-1] == today->init) && (tomorrow->grid[bot->pos->y][bot->pos->x-1] == tomorrow->init)){
                 int left_range = abs(today->width/2 - bot->pos->x-1);
@@ -93,13 +93,13 @@ void naive_path1(player* bot, scene_object** future){
                 move_left(bot->pos,today);
             }
         }
-        else{// Pas proche des bords
+        else{// Not close to the edges
             if((today->grid[bot->pos->y+1][bot->pos->x] == today->init) && (tomorrow->grid[bot->pos->y+1][bot->pos->x] == tomorrow->init)){
                 move_up(bot->pos,today);
 
             }
             // else if((tomorrow->grid[bot->pos->y][bot->pos->x] == tomorrow->init)){
-            //     moveto(bot->pos,bot->pos->x,bot->pos->y);//dont move
+            //     moveto(bot->pos,bot->pos->x,bot->pos->y);// don't move
             // }
             else if((today->grid[bot->pos->y][bot->pos->x+1] == today->init) && (tomorrow->grid[bot->pos->y][bot->pos->x+1] == tomorrow->init) && (today->grid[bot->pos->y][bot->pos->x-1] == today->init) && (tomorrow->grid[bot->pos->y][bot->pos->x-1] == tomorrow->init)){
                 

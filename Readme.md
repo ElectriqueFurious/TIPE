@@ -1,72 +1,72 @@
-# Projet de Simulation de Gardes
+# Guard Simulation Project
 
-Ce projet simule le comportement de gardes et d'un joueur dans un environnement 2D. Il permet de générer des GIFs de simulations individuelles ou de lancer des lots de simulations pour analyser les performances de différents comportements de gardes.
+This project simulates the behavior of guards and a player in a 2D environment. It allows for generating GIFs of individual simulations or running batches of simulations to analyze the performance of different guard behaviors.
 
 ## Compilation
 
-Le projet se compile à l'aide du `Makefile` fourni. Les cibles principales sont expliquées dans la section suivante.
+The project is compiled using the provided `Makefile`. The main targets are explained in the following section.
 
-## Utilisation du Makefile
+## Makefile Usage
 
-Le `Makefile` simplifie la compilation et l'exécution des simulations.
+The `Makefile` simplifies the compilation and execution of simulations.
 
--   `make tests`: Compile le programme de simulation unique et génère l'exécutable `tests.out`.
--   `make main`: Compile le programme de simulation en lot et génère l'exécutable `main.out`.
--   `make all_t`: **Raccourci tout-en-un pour générer un GIF.** Compile et exécute la simulation de test, puis génère le fichier `out/test.gif`.
--   `make all_m`: **Raccourci tout-en-un pour l'analyse.** Lance une simulation en lot avec des paramètres par défaut, puis génère et affiche les graphiques d'analyse.
--   `make clean`: Supprime les fichiers objets, les exécutables et les fichiers de résultats (`.txt`).
+-   `make tests`: Compiles the single simulation program and generates the `tests.out` executable.
+-   `make main`: Compiles the batch simulation program and generates the `main.out` executable.
+-   `make all_t`: **All-in-one shortcut to generate a GIF.** Compiles and runs the test simulation, then generates the `out/test.gif` file.
+-   `make all_m`: **All-in-one shortcut for analysis.** Launches a batch simulation with default parameters, then generates and displays analysis graphs.
+-   `make clean`: Deletes object files, executables, and result files (`.txt`).
 
-## Comment générer un GIF d'une simulation
+## How to Generate a Simulation GIF
 
-La méthode la plus simple est d'utiliser la cible `all_t` du `Makefile`, qui compile, exécute la simulation de test et génère le fichier `out/test.gif`.
+The simplest method is to use the `all_t` target of the `Makefile`, which compiles, runs the test simulation, and generates the `out/test.gif` file.
 
-Pour personnaliser cette simulation de test, vous devez modifier le fichier `tests/tests.c`.
+To customize this test simulation, you need to modify the `tests/tests.c` file.
 
-1.  **Ouvrez `tests/tests.c`.** Les principaux paramètres se trouvent dans la fonction `test_simulate_path`.
+1.  **Open `tests/tests.c`.** The main parameters are found in the `test_simulate_path` function.
 
-2.  **Ajustez les paramètres des entités :**
-    *   **Nombre de gardes :** Modifiez la variable `number`.
+2.  **Adjust entity parameters:**
+    *   **Number of guards:** Modify the `number` variable.
         ```c
-        // dans tests/tests.c
-        int number = 180; // La simulation se lancera avec 180 gardes.
+        // in tests/tests.c
+        int number = 180; // The simulation will run with 180 guards.
         ```
-    *   **Comportement des gardes :** Modifiez le deuxième argument de `new_guard_list`. La liste des comportements (1: rotation, 2: random_line, etc.) se trouve plus bas dans ce README.
+    *   **Guard behavior:** Modify the second argument of `new_guard_list`. The list of behaviors (1: rotation, 2: random_line, etc.) is further down in this README.
         ```c
-        // dans tests/tests.c
-        guard_list* guards = new_guard_list(number, 5, ROTATION_SPEED, 1, 4); // Comportement 5 (mousaid).
+        // in tests/tests.c
+        guard_list* guards = new_guard_list(number, 5, ROTATION_SPEED, 1, 4); // Behavior 5 (mousaid).
         ```
-    *   **Position d'un garde :** Pour tester une configuration précise, vous pouvez fixer la position d'un garde en décommentant et modifiant la ligne `moveto`.
+    *   **Guard position:** To test a precise configuration, you can fix a guard's position by uncommenting and modifying the `moveto` line.
         ```c
-        // dans tests/tests.c
-        // moveto(guards->tab[0]->pos, 50, 50); // Déplace le garde 0 en (50, 50)
+        // in tests/tests.c
+        // moveto(guards->tab[0]->pos, 50, 50); // Moves guard 0 to (50, 50)
         ```
 
-3.  **Ajustez les paramètres de la simulation :**
-    La fonction `simulate` est appelée vers la fin de `test_simulate_path`. Vous pouvez en modifier les arguments pour plus de personnalisation.
+3.  **Adjust simulation parameters:**
+    The `simulate` function is called near the end of `test_simulate_path`. You can modify its arguments for more customization.
     `simulate(scene, guards, bot, 5, n, true, f)`
-    *   **`speed` (4ème argument) :** Contrôle la durée maximale de la simulation (`durée_max = hauteur * speed`). Augmenter cette valeur donne plus de temps au joueur pour atteindre la sortie. La valeur est ici `5`.
-    *   **`accuracy` (5ème argument, variable `n`) :** C'est la profondeur de l'anticipation du joueur. Ce paramètre est défini dans la fonction `main` de `tests/tests.c`.
+    *   **`speed` (4th argument):** Controls the maximum duration of the simulation (`max_duration = height * speed`). Increasing this value gives the player more time to reach the exit. The value here is `5`.
+    *   **`accuracy` (5th argument, variable `n`):** This is the depth of the player's anticipation. This parameter is defined in the `main` function of `tests/tests.c`.
         ```c
-        // dans tests/tests.c, fonction main()
-        test_simulate_path(100); // L'accuracy est ici de 100.
+        // in tests/tests.c, main() function
+        test_simulate_path(100); // Accuracy is 100 here.
         ```
-    *   **`export` (6ème argument) :** C'est un booléen (`true` ou `false`). Il doit être à `true` pour que le programme écrive les données de la simulation dans un fichier, nécessaire à la création du GIF.
+    *   **`export` (6th argument):** This is a boolean (`true` or `false`). It must be `true` for the program to write simulation data to a file, which is necessary for GIF creation.
 
-4.  **Exécutez la commande `make all_t` :**
+4.  **Execute the `make all_t` command:**
     ```bash
     make all_t
     ```
-    Après avoir sauvegardé vos modifications dans `tests/tests.c`, cette commande relancera le processus complet.
+    After saving your changes in `tests/tests.c`, this command will restart the entire process.
 
-## Comment lancer des simulations en lot
+## How to Run Batch Simulations
 
-La méthode la plus simple pour lancer des simulations en lot est de passer par la cible `all_m` du `Makefile`, qui s'occupe de tout (compilation, exécution, analyse).
+The simplest method to run batch simulations is to use the `all_m` target of the `Makefile`, which handles everything (compilation, execution, analysis).
 
-Pour configurer votre lot de simulations, vous pouvez directement modifier les paramètres dans le `Makefile`.
+To configure your batch of simulations, you can directly modify the parameters in the `Makefile`.
 
-1.  **Ouvrez le fichier `Makefile`.**
+1.  **Open the `Makefile` file.**
 
-2.  **Modifiez les variables de simulation** au début du fichier :
+2.  **Modify the simulation variables** at the beginning of the file:
     ```makefile
     # Parameters for all_m
     K        = 20
@@ -75,74 +75,74 @@ Pour configurer votre lot de simulations, vous pouvez directement modifier les p
     PAS      = 5
     ACCURACY = 20
     ```
-    -   `K`: Le nombre de simulations à exécuter pour chaque configuration.
-    -   `N`, `M`: La plage pour le nombre de gardes (de N à M).
-    -   `PAS`: Le pas d'incrémentation pour le nombre de gardes.
-    -   `ACCURACY`: La précision de l'algorithme du joueur (nombre de tours anticipés).
+    -   `K`: The number of simulations to run for each configuration.
+    -   `N`, `M`: The range for the number of guards (from N to M).
+    -   `PAS`: The increment step for the number of guards.
+    -   `ACCURACY`: The precision of the player's algorithm (number of anticipated turns).
 
-3.  **Exécutez la commande `make all_m` :**
+3.  **Execute the `make all_m` command:**
     ```bash
     make all_m
     ```
-    Cette commande lancera les simulations avec vos paramètres et générera les graphiques d'analyse correspondants.
+    This command will launch the simulations with your parameters and generate the corresponding analysis graphs.
 
-4.  **(Optionnel) Changer le type de simulation en lot :**
-    Si vous souhaitez exécuter un autre type de simulation en lot (par exemple, pour tester l'impact de la vitesse de rotation des gardes), vous pouvez modifier le fichier `main.c`.
-    -   Ouvrez le fichier `main.c`.
-    -   Dans la fonction `main`, vous pouvez commenter la ligne `simulate_from_to(...)` et décommenter la ligne `find_angle_rotation(...)` pour changer le type de simulation.
+4.  **(Optional) Change the type of batch simulation:**
+    If you want to run another type of batch simulation (e.g., to test the impact of guard rotation speed), you can modify the `main.c` file.
+    -   Open the `main.c` file.
+    -   In the `main` function, you can comment out the `simulate_from_to(...)` line and uncomment the `find_angle_rotation(...)` line to change the simulation type.
         ```c
-        // Exemple dans main.c
+        // Example in main.c
         simulate_from_to(k,n,m,pas,MAX_BEHAVE,accuracy);
         // find_angle_rotation(0,20,2,k,n,m,pas,accuracy);
         ```
-    -   Vous pouvez également créer votre propre fonction de simulation sur le modèle de `simulate_from_to` ou `find_angle_rotation` et l'appeler dans le `main`.
-    -   Après avoir modifié `main.c`, relancez `make all_m` pour compiler et exécuter vos nouvelles simulations.
+    -   You can also create your own simulation function based on the `simulate_from_to` or `find_angle_rotation` model and call it in `main`.
+    -   After modifying `main.c`, rerun `make all_m` to compile and execute your new simulations.
 
-5.  **(Optionnel) Changer la plage de comportements simulés :**
-    Par défaut, la simulation en lot (`simulate_from_to`) teste une plage de comportements de gardes qui est fixée directement dans le code. Vous pouvez la modifier pour analyser uniquement les comportements qui vous intéressent.
-    -   Ouvrez le fichier `main.c`.
-    -   Allez dans la fonction `simulate_from_to`.
-    -   Modifiez les 3ème et 4ème arguments de l'appel à `k_simulation` pour définir la plage de comportements (par exemple, de 1 à 4).
+5.  **(Optional) Change the range of simulated behaviors:**
+    By default, the batch simulation (`simulate_from_to`) tests a range of guard behaviors that is fixed directly in the code. You can modify it to analyze only the behaviors you are interested in.
+    -   Open the `main.c` file.
+    -   Go to the `simulate_from_to` function.
+    -   Modify the 3rd and 4th arguments of the `k_simulation` call to define the range of behaviors (e.g., from 1 to 4).
         ```c
-        // dans main.c, fonction simulate_from_to
-        k_simulation(k, i, 1, 4, accuracy); // Simule les comportements 1, 2, 3 et 4
+        // in main.c, simulate_from_to function
+        k_simulation(k, i, 1, 4, accuracy); // Simulates behaviors 1, 2, 3 and 4
         ```
-    -   Le programme utilise aussi une constante `MAX_BEHAVE` au début du fichier. Actuellement, elle n'est pas utilisée par `simulate_from_to`, mais vous pourriez modifier la fonction pour qu'elle utilise `MAX_BEHAVE` comme borne supérieure si vous le souhaitez (`k_simulation(k, i, 1, range, accuracy)`).
+    -   The program also uses a `MAX_BEHAVE` constant at the beginning of the file. Currently, it is not used by `simulate_from_to`, but you could modify the function to use `MAX_BEHAVE` as an upper bound if you wish (`k_simulation(k, i, 1, range, accuracy)`).
 
-## Scripts Python d'Analyse et de Visualisation
+## Python Analysis and Visualization Scripts
 
-Le dossier `out/` contient plusieurs scripts Python pour traiter et visualiser les données.
+The `out/` folder contains several Python scripts for processing and visualizing data.
 
--   `main.py`: Le script principal qui prend un argument en ligne de commande :
-    -   `gif`: Lit `test.txt` pour créer un GIF animé.
-    -   `plot`: Lit les données dans `out/score/` pour afficher des graphiques de performance.
-    Les commandes du `Makefile` (`all_t`, `all_m`) utilisent ces arguments automatiquement.
--   `sublim.py`: Bibliothèque pour la création d'images à partir des données de simulation.
--   `analyses.py`: Bibliothèque pour l'analyse statistique des scores et la génération des graphiques avec `matplotlib`.
--   `const.py`: Fichier de constantes définissant les chemins des dossiers.
+-   `main.py`: The main script that takes a command-line argument:
+    -   `gif`: Reads `test.txt` to create an animated GIF.
+    -   `plot`: Reads data in `out/score/` to display performance graphs.
+    The `Makefile` commands (`all_t`, `all_m`) use these arguments automatically.
+-   `sublim.py`: Library for creating images from simulation data.
+-   `analyses.py`: Library for statistical analysis of scores and graph generation with `matplotlib`.
+-   `const.py`: Constants file defining folder paths.
 
-Pour utiliser ces scripts, les bibliothèques `matplotlib` et `Pillow` sont nécessaires :
+To use these scripts, the `matplotlib` and `Pillow` libraries are required:
 ```bash
 pip install matplotlib Pillow
 ```
 
 ## Configuration
 
-### Le paramètre `accuracy`
-Ce paramètre, passé à l'exécutable `main` ou modifié dans `tests.c`, est crucial pour l'intelligence du joueur. Il représente le **nombre de tours de jeu que le joueur peut anticiper**.
+### The `accuracy` parameter
+This parameter, passed to the `main` executable or modified in `tests.c`, is crucial for the player's intelligence. It represents the **number of game turns the player can anticipate**.
 
-Concrètement, le programme pré-calcule les `accuracy` prochains mouvements des gardes. L'algorithme de recherche de chemin (A*) du joueur utilise ensuite ces positions futures pour trouver un chemin qui n'est pas seulement sûr maintenant, mais qui le restera aussi pour les `accuracy` prochains tours.
+Specifically, the program pre-calculates the `accuracy` next movements of the guards. The player's pathfinding algorithm (A*) then uses these future positions to find a path that is not only safe now but will also remain safe for the next `accuracy` turns.
 
--   **Une `accuracy` faible** rendra le joueur "myope" : il pourrait s'engager dans un chemin qui semble sûr mais qui deviendra un piège.
--   **Une `accuracy` élevée** permettra au joueur de trouver des stratégies complexes pour éviter les gardes, mais augmentera considérablement le temps de calcul.
+-   **Low `accuracy`** will make the player "short-sighted": they might commit to a path that seems safe but will become a trap.
+-   **High `accuracy`** will allow the player to find complex strategies to avoid guards but will significantly increase computation time.
 
-**Attention à la performance :** L'impact de l' `accuracy` sur le temps de calcul peut être très important. Dans le pire des cas, l'augmentation est exponentielle. Si une situation est simple (peu de gardes, chemin évident), n'importe quel niveau d'accuracy sera rapide. En revanche, pour une même simulation très complexe, le temps de calcul peut plus que doubler en passant d'une `accuracy` de 100 à 150. Il est donc conseillé de commencer avec des valeurs faibles et d'augmenter progressivement.
+**Performance warning:** The impact of `accuracy` on computation time can be very significant. In the worst case, the increase is exponential. If a situation is simple (few guards, obvious path), any level of accuracy will be fast. However, for the same very complex simulation, computation time can more than double when going from an `accuracy` of 100 to 150. It is therefore advisable to start with low-values and increase them gradually.
 
-### Comportements des gardes
+### Guard Behaviors
 
-Les comportements (`behave`) sont définis dans la fonction `initializer` du fichier `entity/guard.c`. Voici la liste :
+Behaviors (`behave`) are defined in the `initializer` function of the `entity/guard.c` file. Here is the list:
 
-| Valeur | Comportement     |
+| Value | Behavior         |
 | :----: | :--------------- |
 |   1    | `rotation`       |
 |   2    | `random_line`    |
@@ -150,15 +150,13 @@ Les comportements (`behave`) sont définis dans la fonction `initializer` du fic
 |   4    | `centred_square` |
 |   5    | `mousaid`        |
 |   6    | `snake`          |
-| autre  | `nothing`        |
+| other  | `nothing`        |
 
-### Paramètres globaux
+### Global Parameters
 
-Vous pouvez modifier des constantes globales pour la simulation dans `values.h`, telles que :
+You can modify global constants for the simulation in `values.h`, such as:
 
--   `HEIGHT`, `WIDTH` : Dimensions de la zone de simulation.
--   `VISION_DISTANCE` : Distance de vision des gardes.
--   `VISION_FIELD` : Champ de vision des gardes (en degrés).
--   `ROTATION_SPEED` : Vitesse de rotation des gardes.
-
-```
+-   `HEIGHT`, `WIDTH`: Dimensions of the simulation area.
+-   `VISION_DISTANCE`: Guards' vision distance.
+-   `VISION_FIELD`: Guards' field of vision (in degrees).
+-   `ROTATION_SPEED`: Guards' rotation speed.

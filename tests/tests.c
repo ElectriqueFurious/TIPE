@@ -35,32 +35,32 @@ void test_postion(){
 
     draw_position(pos,scene,1);
     move_right(pos,scene);
-    printf("position : (%d,%d)\n",pos->x,pos->y);
+    printf("position: (%d,%d)\n",pos->x,pos->y);
     draw_position(pos,scene,2);
     move_up(pos,scene);
-    printf("position : (%d,%d)\n",pos->x,pos->y);
+    printf("position: (%d,%d)\n",pos->x,pos->y);
     move_down(pos,scene);
-    printf("position : (%d,%d)\n",pos->x,pos->y);
+    printf("position: (%d,%d)\n",pos->x,pos->y);
     move_left(pos,scene);
-    printf("position : (%d,%d)\n",pos->x,pos->y);
+    printf("position: (%d,%d)\n",pos->x,pos->y);
     draw_position(pos,scene,3);
     move_down(pos,scene);
-    printf("position : (%d,%d)\n",pos->x,pos->y);
+    printf("position: (%d,%d)\n",pos->x,pos->y);
     move_left(pos,scene);
-    printf("position : (%d,%d)\n",pos->x,pos->y);
+    printf("position: (%d,%d)\n",pos->x,pos->y);
     draw_position(pos,scene,4);
     display_scene(scene,stdout);
 
     moveto(pos,9,4);
-    printf("position : (%d,%d)\n",pos->x,pos->y);
+    printf("position: (%d,%d)\n",pos->x,pos->y);
     draw_position(pos,scene,5);
     move_right(pos,scene);
-    printf("position : (%d,%d)\n",pos->x,pos->y);
+    printf("position: (%d,%d)\n",pos->x,pos->y);
     draw_position(pos,scene,6);
     display_scene(scene,stdout);
 
     move_down(pos,scene);
-    printf("position : (%d,%d)\n",pos->x,pos->y);
+    printf("position: (%d,%d)\n",pos->x,pos->y);
     draw_position(pos,scene,5);
     display_scene(scene,stdout);
 
@@ -68,7 +68,7 @@ void test_postion(){
     delete_scene(scene); 
 }
 
-void test_select_circle(){//pas bon à partir de la
+void test_select_circle(){//not good from here
     scene_object* scene = new_scene(101,101,0);
     scene_init(scene,scene->init);
     position* pos = new_position(50,50);
@@ -80,7 +80,7 @@ void test_select_circle(){//pas bon à partir de la
         display_scene(scene,stdout);
     }
 
-    printf("Il y a %d points !!\n\n",circle->size - 1);
+    printf("There are %d points !!\n\n",circle->size - 1);
 
     delete_position(pos);
     delete_list_position(circle);
@@ -94,7 +94,7 @@ void test_select_arc(){
 
     for(int j=0;j < 37;j++){
         list_position* arc = select_arc(pos,45,10*j,60);
-        //modifier 360 pour voir la différence suivant les angels
+        //modify 360 to see the difference according to the angles
         check_selection(arc,scene);
         arc = delete_double(arc);
         draw_position(pos,scene,0);
@@ -105,7 +105,7 @@ void test_select_arc(){
         wait(scene);
         display_scene(scene,stdout);
         scene_init(scene,scene->init);
-        printf("Il y a %d points !!\n\n",arc->size - 1);
+        printf("There are %d points !!\n\n",arc->size - 1);
         delete_list_position(arc);
     }
 
@@ -176,7 +176,7 @@ void test_simulate_path(int n){
 
     FILE* f = fopen("./out/test.txt","w");
     fprintf(f,"%d\n%d\n",scene->width,scene->height);
-    printf("Score : %d\n",simulate(scene,guards,bot,3,n,true,f));
+    printf("Score: %d\n",simulate(scene,guards,bot,3,n,true,f));
     fclose(f);
 
     delete_guard_list(guards);
@@ -188,7 +188,7 @@ int main(void){
     int seed = time(NULL);
     // seed = 1716130203;
     srand(seed);
-    printf("seed : %d\n",seed);
+    printf("seed: %d\n",seed);
     // test_scene();
     // test_player();
     // test_guard();

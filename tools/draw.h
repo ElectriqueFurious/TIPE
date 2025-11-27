@@ -20,7 +20,7 @@ void draw_line(position*,position*,scene_object*,int,int);
 void draw_line_in_cross(position*,position*,scene_object*,int,int);
 
 void draw_cone(position*,int,int,int,scene_object*,int,int);
-//collorie plusieur fois la même case mais permet les obstacles
+//colors the same cell multiple times but allows obstacles
 void draw_cone_with_cross(position*,int,int,int,scene_object*,int,int);
 void quick_draw_cone(position*,int,int,int,scene_object*,int,int);
 void print_trajectory(scene_object*,priority_list*,int);

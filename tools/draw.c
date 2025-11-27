@@ -41,7 +41,7 @@ list_position* select_circle(position* pos,int radius){
         }
         x = x + 1;
         m = m + 8*x + 4;
-    }//count
+    }// count
 
     int size = cpt*8;
     list_position* res = new_list_position(size);

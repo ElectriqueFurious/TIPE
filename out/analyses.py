@@ -48,22 +48,22 @@ def color(k):
 #     elif k == 2: return legend+"<20"
 #     else: return ""
 
-def noms(k):
+def behavior_name(k):
     match k:
         case 0:
             return "immobile"
         case 1:
             return "rotation"
         case 2:
-            return "aléatoire"
+            return "random"
         case 3:
-            return "aller-retour"
+            return "back-and-forth"
         case 4:
-            return "en carré"
+            return "in square"
         case 5:
-            return "en essaim"
+            return "in swarm"
         case _:
-            return "en S"
+            return "in S"
 
 def fill_dico(dico):
     files = sorted(listdir(rac+folder))
@@ -120,10 +120,10 @@ def plot_mean_dico(dico,legend):
             x.append(nb)
             y.append(mean(l))
         x,y = smooth(x,y)
-        plt.plot(x,y,color=color(num_fil),label=legend+noms(num_fil))
+        plt.plot(x,y,color=color(num_fil),label=legend+behavior_name(num_fil))
     plt.legend()
-    plt.xlabel("nombre de gardes")
-    plt.ylabel("temps moyen mis par le joueur")
+    plt.xlabel("number of guards")
+    plt.ylabel("average time taken by the player")
     plt.show()
     
 def scatter_all_dico(dico,legend):
@@ -135,8 +135,8 @@ def scatter_all_dico(dico,legend):
             y = [e for e in l if e<301 and e>-301]
             x = [nb for i in range(len(y))]
             plt.scatter(x,y,color=color(num_fil))
-        plt.xlabel("nombre de gardes")
-        plt.ylabel("temps mis par le joueur")
+        plt.xlabel("number of guards")
+        plt.ylabel("time taken by the player")
         plt.show()
         print(cpt)
             
@@ -149,8 +149,8 @@ def plot_achive_rate(dico,legend):
             x.append(nb)
             y.append(sum([1/len(l) for e in l if e > 0]))
         x,y = smooth(x,y)
-        plt.plot(x,y,color=color(num_fil),label=legend+noms(num_fil))
+        plt.plot(x,y,color=color(num_fil),label=legend+behavior_name(num_fil))
     plt.legend()
-    plt.xlabel("nombre de gardes")
-    plt.ylabel("taux de réussite du joueur")
+    plt.xlabel("number of guards")
+    plt.ylabel("player success rate")
     plt.show()

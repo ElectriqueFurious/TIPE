@@ -9,42 +9,42 @@ from analyses import *
 def generate_gif():
     """Generates a GIF from the test.txt simulation output."""
     if not os.path.exists(rac+"test.txt"):
-        print("Erreur : Le fichier test.txt n'a pas été trouvé. Exécutez d'abord 'make all_t'.")
+        print("Error: test.txt not found. Run 'make all_t' first.")
         return
         
     if os.path.exists(rac+"jpg"):
         shutil.rmtree(rac+"jpg")
     os.mkdir(rac+"jpg")
     
-    print("Génération des images BMP à partir de test.txt...")
+    print("Generating BMP images from test.txt...")
     cpt = grids("test.txt", 3)
     mean_grid("test.txt", cpt, 3)
     
-    print("Assemblage du GIF...")
+    print("Assembling the GIF...")
     frames = [Image.open(image) for image in sorted(glob.glob(rac+"jpg/*.bmp"), key=lambda x: int(os.path.basename(os.path.splitext(x)[0])))]
     if not frames:
-        print("Erreur : Aucune image BMP n'a été générée.")
+        print("Error: No BMP images were generated.")
         return
         
     frame_one = frames[0]
     frame_one.save(rac+"test.gif", format="GIF", append_images=frames, save_all=True, duration=80, loop=1)
-    print(f"GIF sauvegardé sous {rac}test.gif")
+    print(f"GIF saved as {rac}test.gif")
     shutil.rmtree(rac+"jpg")
 
 def plot_results():
     """Analyzes batch simulation results and plots graphs."""
     if not os.path.exists(rac+folder) or not listdir(rac+folder):
-        print(f"Erreur : Le dossier {rac+folder} est vide ou n'existe pas. Exécutez d'abord 'make all_m'.")
+        print(f"Error: The {rac+folder} directory is empty or does not exist. Run 'make all_m' first.")
         return
         
-    print("Analyse des résultats et génération des graphiques...")
+    print("Analyzing results and generating plots...")
     dico = {}
     fill_dico(dico)
-    legend = "Comportement : " # "vitesse (degré/tour) : "
+    legend = "Behavior: " # "speed (degree/turn): "
     plot_achive_rate(dico, legend)
     plot_mean_dico(dico, legend)
     # scatter_all_dico(dico, legend)
-    print("Affichage des graphiques.")
+    print("Displaying plots.")
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -58,6 +58,6 @@ if __name__ == "__main__":
     elif mode == "plot":
         plot_results()
     else:
-        print(f"Erreur : Mode '{mode}' non reconnu.")
+        print(f"Error: Mode '{mode}' not recognized.")
         print("Usage: python3 main.py [gif|plot]")
         sys.exit(1)

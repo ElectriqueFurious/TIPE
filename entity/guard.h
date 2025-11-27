@@ -12,7 +12,7 @@ typedef struct{
     int angle;
     bool moving;
     bool rotating;
-} goal; //Nécéssaire pour les mouvements simple
+} goal; //Necessary for simple movements
 
 typedef struct behave_option_t behave_option;
 typedef struct guard_t guard;
@@ -24,7 +24,7 @@ struct behave_option_t {
     int list_size;
     int current_task;
     void (*move_function)(guard_list*,scene_object*,int,int);
-};//Permet la complexité de comportement
+};//Allows for complex behavior
 
 struct guard_t{
     position* pos;

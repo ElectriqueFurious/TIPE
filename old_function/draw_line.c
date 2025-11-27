@@ -9,15 +9,15 @@ void draw_line(position* p,position* p2,scene_object* scene,int color){
     int dx = p2->x - p1->x;
     int dy = p2->y - p1->y;
 
-    if (dx!=0){//Non vertical
+    if (dx!=0){//Non-vertical
 
-        if(dx>0){//Partie droite
+        if(dx>0){//Right side
 
-            if(dy!=0){//Non horizontal
+            if(dy!=0){//Non-horizontal
 
-                if(dy>0){//Partie haute, donc de 0 à pi/2
+                if(dy>0){//Top part, so from 0 to pi/2
 
-                    if(dx >= dy){//Donc 0 à pi/4, octant numéro 1
+                    if(dx >= dy){//So 0 to pi/4, octant number 1
 
                         int e = dx;
                         dx = e*2;
@@ -34,7 +34,7 @@ void draw_line(position* p,position* p2,scene_object* scene,int color){
                         }
 
                     }
-                    else {//donc de pi/4 à pi/2, octant numéro 2 (symétrique par rapport à x=y)
+                    else {//so from pi/4 to pi/2, octant number 2 (symmetrical with respect to x=y)
 
                         int e = dy;
                         dx = dx*2;
@@ -53,9 +53,9 @@ void draw_line(position* p,position* p2,scene_object* scene,int color){
                     }
 
                 }
-                else{//Donc Partie basse (toujours gauche)
+                else{//So bottom part (still left)
 
-                    if(dx>=-dy){//Octant numéro 8
+                    if(dx>=-dy){//Octant number 8
                         
                         int e = dx;
                         dx = e*2;
@@ -72,7 +72,7 @@ void draw_line(position* p,position* p2,scene_object* scene,int color){
                         }
 
                     }
-                    else{//Octant numéro 7
+                    else{//Octant number 7
 
                         int e = dy;
                         dx = dx*2;
@@ -92,7 +92,7 @@ void draw_line(position* p,position* p2,scene_object* scene,int color){
                 }
 
             }
-            else{//Horizontal à droite
+            else{//Horizontal to the right
 
                 while(p1->x != p2->x + 1){
                     draw_position(p1,scene, color);
@@ -102,13 +102,13 @@ void draw_line(position* p,position* p2,scene_object* scene,int color){
             }
 
         }
-        else{//Partie Guauche
+        else{//Left side
 
-            if(dy!=0){//Non Horizontal
+            if(dy!=0){//Non-horizontal
 
-                if(dy>0){//Partie Haute-Guache
+                if(dy>0){//Top-Left part
 
-                    if(-dx >= dy){//Octant numéro 4
+                    if(-dx >= dy){//Octant number 4
 
                         int e = dx;
                         dx = e*2;
@@ -125,7 +125,7 @@ void draw_line(position* p,position* p2,scene_object* scene,int color){
                         }
 
                     }
-                    else{//Octane numéro 3
+                    else{//Octant number 3
 
                         int e = dy;
                         dx = dx*2;
@@ -146,7 +146,7 @@ void draw_line(position* p,position* p2,scene_object* scene,int color){
                 }
                 else{
 
-                    if(dx<=dy){//Octant numéro 5
+                    if(dx<=dy){//Octant number 5
 
                         int e = dx;
                         dx = e*2;
@@ -163,7 +163,7 @@ void draw_line(position* p,position* p2,scene_object* scene,int color){
                         }
 
                     }
-                    else{//Octant numéro 6
+                    else{//Octant number 6
 
                         int e = dy;
                         dx = dx*2;
@@ -184,7 +184,7 @@ void draw_line(position* p,position* p2,scene_object* scene,int color){
                 }
 
             }
-            else{//Horizontale Gauche
+            else{//Horizontal Left
 
                 while (p1->x != p2->x - 1){
                     draw_position(p1,scene,color);

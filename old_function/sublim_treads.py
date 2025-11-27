@@ -5,7 +5,7 @@ import shutil
 import os
 from more_itertools import divide
 
-rac = "out/"
+root_dir = "out/"
 
 def color(n):
     match n:
@@ -22,10 +22,10 @@ def color(n):
         case _:
             return [255,255,255]
 
-if os.path.exists(rac+"jpg"):
-    shutil.rmtree(rac+"jpg")
-os.mkdir(rac+"jpg")
-file = open(rac+"test.txt","r")
+if os.path.exists(root_dir+"jpg"):
+    shutil.rmtree(root_dir+"jpg")
+os.mkdir(root_dir+"jpg")
+file = open(root_dir+"test.txt","r")
 
 width = int(file.readline())
 height = int (file.readline())
@@ -36,18 +36,18 @@ array = None
 mid = np.zeros([width,height,3],dtype=np.uint64)
 b = np.zeros([width,height])
 
-NB_THREADS = 100
+NUM_THREADS = 100
 
 line = file.read()
 line = line.replace("C\nO\n", "#").replace("O\n", "#").replace("C\n", "#").replace("\n", ",")
 line = line.split("#")[:-2]
-cpt_img = len(line)
-line = [list(c) for c in divide(NB_THREADS, line)]
+image_count = len(line)
+line = [list(c) for c in divide(NUM_THREADS, line)]
 
 import threading 
 
-def task(img_arr, debut):
-    cpt = debut
+def task(img_arr, start_index):
+    image_counter = start_index
     for img in img_arr:
         array = np.zeros([width,height,3],dtype=np.uint8)
         array[:,:] = [255,255,255]
@@ -64,36 +64,36 @@ def task(img_arr, debut):
                 b[v1,v2] = False
 
         img = Image.fromarray(array)
-        img.save(rac+"jpg/"+str(cpt)+".bmp","bmp")
-        cpt += 1
-        # print(str(cpt)+"\n")
+        img.save(root_dir+"jpg/"+str(image_counter)+".bmp","bmp")
+        image_counter += 1
+        # print(str(image_counter)+"\n")
 
 d = 0
 t = []
-for i in range(NB_THREADS):
+for i in range(NUM_THREADS):
     thread = threading.Thread(target=task, args=(line[i],d, ))
     d += len(line[i])
     thread.start()
     t.append(thread)
     
-for i in range(NB_THREADS):
+for i in range(NUM_THREADS):
     t[i].join()
 
 file.close()
 
-print("Fin threads")
+print("Threads finished")
 
 new_mid = np.zeros([width,height,3],dtype=np.uint8)
 
 for i in range(width):
     for j in range(height):
-        new_mid[i,j,2] = int(mid[i,j,2]*(255/cpt_img))
+        new_mid[i,j,2] = int(mid[i,j,2]*(255/image_count))
 
 img = Image.fromarray(new_mid)
-img.save(rac+"mid.bmp")
+img.save(root_dir+"mid.bmp")
 
-frames = [Image.open(image) for image in sorted(glob.glob(rac+"jpg/*.bmp"), key=lambda x: int(os.path.basename(os.path.splitext(x)[0])))]
+frames = [Image.open(image) for image in sorted(glob.glob(root_dir+"jpg/*.bmp"), key=lambda x: int(os.path.basename(os.path.splitext(x)[0])))]
 frame_one = frames[0]
-frame_one.save(rac+"test.gif", format="GIF", append_images=frames,save_all=True, duration=80, loop=1)
+frame_one.save(root_dir+"test.gif", format="GIF", append_images=frames,save_all=True, duration=80, loop=1)
 
-shutil.rmtree(rac+"jpg")
+shutil.rmtree(root_dir+"jpg")

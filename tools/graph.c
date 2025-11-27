@@ -88,7 +88,7 @@ position* A_star(scene_object** scene_list, int time,int accuracy, position* def
             }
         }
         if(!have_neighbors){
-            delete_tree_node(u->way);//soulage la mémoire
+            delete_tree_node(u->way);//relieves memory
         }
         delete_list_position(voisins);
         enstack(new_stack_elt(copy_position(u->node),u->cout),closedList);

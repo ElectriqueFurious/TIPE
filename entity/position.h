@@ -18,7 +18,7 @@ position* copy_position(position*);
 void delete_position(position*);
 
 list_position* new_list_position(int);
-list_position* copy_list_position(list_position*);//à faire
+list_position* copy_list_position(list_position*);//TODO
 void delete_list_position(list_position*);
 
 void moveto(position*,int,int);
