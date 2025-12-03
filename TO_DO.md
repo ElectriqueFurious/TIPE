@@ -47,7 +47,7 @@
 ## Optimizations
 
 - [x] Filename filled with zeros
-- [x] Modify `draw` to get rid of `clean_holl`
+- [x] Modify `draw` to get rid of `clean_hole`
 - [x] Multithread main
 - [x] Remove insta-kill
 - [x] Not too long for "nothing"
