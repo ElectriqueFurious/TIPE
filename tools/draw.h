@@ -25,6 +25,6 @@ void draw_cone_with_cross(position*,int,int,int,scene_object*,int,int);
 void quick_draw_cone(position*,int,int,int,scene_object*,int,int);
 void print_trajectory(scene_object*,priority_list*,int);
 
-void clean_holl(scene_object*,int,int);
+void clean_hole(scene_object*,int,int);
 
 #endif

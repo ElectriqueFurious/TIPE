@@ -287,7 +287,7 @@ void print_trajectory(scene_object* scene, priority_list* list, int color){
     }
 }
 
-void clean_holl(scene_object* scene, int color, int color2){
+void clean_hole(scene_object* scene, int color, int color2){
     for (int i = 0; i < scene->height; i++) {
         for (int j = 0; j < scene->width; j++) {
             if (scene->grid[i][j] == scene->init) {

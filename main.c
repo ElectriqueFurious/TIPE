@@ -138,13 +138,13 @@ void k_simulation(int k,int number,int behave_start,int behave_end, int accuracy
     delete_lab(storage,k);
 }
 
-void simulate_from_to(int k, int n, int m, int pas, int range, int accuracy){
-    for(int i=n; i<=m; i+= pas){
+void simulate_from_to(int k, int n, int m, int step, int range, int accuracy){
+    for(int i=n; i<=m; i+= step){
         k_simulation(k,i,5,6,accuracy); //Select the Range
     }
 }
 
-void k_simulation_rotation(int k,int number,int angle_start,int angle_end, int pas, int accuracy){
+void k_simulation_rotation(int k,int number,int angle_start,int angle_end, int step, int accuracy){
     printf("number: %d\n",number);
     guard_list** storage = malloc(k*sizeof(guard_list*));
     for(int i=0; i<k; i++){
@@ -153,12 +153,12 @@ void k_simulation_rotation(int k,int number,int angle_start,int angle_end, int p
     pthread_t* core = malloc((angle_end-angle_start+1)*sizeof(pthread_t));
     k_sim_arg* parametres = malloc((angle_end-angle_start+1)*sizeof(k_sim_arg));
 
-    for(int r_s=angle_start; r_s<=angle_end; r_s+=pas){
+    for(int r_s=angle_start; r_s<=angle_end; r_s+=step){
         k_sim_arg parametre = {k,number,false,r_s,accuracy,storage};
         parametres[r_s-angle_start] = parametre;
         pthread_create(&core[r_s-angle_start],NULL,thread_simulation,&parametres[r_s-angle_start]);
     }
-    for(int r_s=angle_start; r_s<=angle_end; r_s+=pas){
+    for(int r_s=angle_start; r_s<=angle_end; r_s+=step){
         pthread_join(core[r_s-angle_start],NULL);
     }
 
@@ -167,10 +167,10 @@ void k_simulation_rotation(int k,int number,int angle_start,int angle_end, int p
     delete_lab(storage,k);
 }
 
-void find_angle_rotation(int angle_start, int angle_end, int angle_pas, int k, 
-                            int n, int m, int pas, int accuracy){
-    for(int i=n; i<=m; i+=pas){
-        k_simulation_rotation(k,i,angle_start,angle_end,angle_pas,accuracy);
+void find_angle_rotation(int angle_start, int angle_end, int angle_step, int k, 
+                            int n, int m, int step, int accuracy){
+    for(int i=n; i<=m; i+=step){
+        k_simulation_rotation(k,i,angle_start,angle_end,angle_step,accuracy);
     }
 }
 
@@ -185,17 +185,17 @@ int main(int argc, char **argv){
         \nNeed 5 parameters (in this order) :\
         \n\t-k : the number of simulation per situation\
         \n\t-n and m : simulate from n to m guards\
-        \n\t-pas : it's the step\
+        \n\t-step : it's the step\
         \n\t-accuracy : accuracy of the player\n\n");
     }
     else{
         int k = atoi(argv[1]);
         int n = atoi(argv[2]);
         int m = atoi(argv[3]);
-        int pas = atoi(argv[4]);
+        int step = atoi(argv[4]);
         int accuracy = atoi(argv[5]);
-        simulate_from_to(k,n,m,pas,MAX_BEHAVE,accuracy);
-        // find_angle_rotation(0,20,2,k,n,m,pas,accuracy);
+        simulate_from_to(k,n,m,step,MAX_BEHAVE,accuracy);
+        // find_angle_rotation(0,20,2,k,n,m,step,accuracy);
     }
 
     return 0;

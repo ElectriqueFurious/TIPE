@@ -139,7 +139,7 @@ void test_draw_cone(){
 
     for(int i = 0; i< 37;i++){
         /*quick_*/draw_cone_with_cross(pos,100,10*i,60,scene,1,4);
-        // clean_holl(scene,1,1);
+        // clean_hole(scene,1,1);
         display_scene(scene,stdout);
         scene_init(scene,scene->init);
         wait(scene);

@@ -41,7 +41,7 @@ def color(k):
 #     else:
 #         return "g"
 
-# def noms(k,legend):
+# def names(k,legend):
 #     if k == 40: return legend+"40"
 #     elif k == 60: return legend+">20"
 #     elif k == 0: return legend+"0"
@@ -113,28 +113,28 @@ def smooth(x,y) :
 
 def plot_mean_dico(dico,legend):
     plt.figure("Mean")
-    for num_fil,d in dico.items():
+    for behavior_number,d in dico.items():
         x = []
         y = []
         for nb,l in d.items():
             x.append(nb)
             y.append(mean(l))
         x,y = smooth(x,y)
-        plt.plot(x,y,color=color(num_fil),label=legend+behavior_name(num_fil))
+        plt.plot(x,y,color=color(behavior_number),label=legend+behavior_name(behavior_number))
     plt.legend()
     plt.xlabel("number of guards")
     plt.ylabel("average time taken by the player")
     plt.show()
     
 def scatter_all_dico(dico,legend):
-    for num_fil,d in dico.items():
+    for behavior_number,d in dico.items():
         cpt = 0
-        plt.figure(legend+" : "+str(num_fil))
+        plt.figure(legend+" : "+str(behavior_number))
         for nb,l in d.items():
             cpt += len(l)
             y = [e for e in l if e<301 and e>-301]
             x = [nb for i in range(len(y))]
-            plt.scatter(x,y,color=color(num_fil))
+            plt.scatter(x,y,color=color(behavior_number))
         plt.xlabel("number of guards")
         plt.ylabel("time taken by the player")
         plt.show()
@@ -142,14 +142,14 @@ def scatter_all_dico(dico,legend):
             
 def plot_achive_rate(dico,legend):
     plt.figure("Rate")
-    for num_fil,d in dico.items():
+    for behavior_number,d in dico.items():
         x = []
         y = []
         for nb,l in d.items():
             x.append(nb)
             y.append(sum([1/len(l) for e in l if e > 0]))
         x,y = smooth(x,y)
-        plt.plot(x,y,color=color(num_fil),label=legend+behavior_name(num_fil))
+        plt.plot(x,y,color=color(behavior_number),label=legend+behavior_name(behavior_number))
     plt.legend()
     plt.xlabel("number of guards")
     plt.ylabel("player success rate")

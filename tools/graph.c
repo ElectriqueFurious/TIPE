@@ -54,10 +54,10 @@ position* A_star(scene_object** scene_list, int time,int accuracy, position* def
     position end = *default_end;
 
     while (!empty_priority_list(openList)){
-        data* u = openList->tas[1];
+        data* u = openList->heap[1];
         end.x = u->way->pos.x;
 
-        if((u->node->x == end.x && u->node->y == end.y) || u->cout >= accuracy-1){
+        if((u->node->x == end.x && u->node->y == end.y) || u->cost >= accuracy-1){
             position* res = copy_position(u->node);
             if(u->way->start != NULL){
                 delete_position(res);
@@ -66,14 +66,14 @@ position* A_star(scene_object** scene_list, int time,int accuracy, position* def
             return res;
         }
 
-        u = remove_rac(openList);
-        list_position* voisins = neighbors(scene_list[(time+u->cout+1)%accuracy],u->node,height,width);
+        u = remove_root(openList);
+        list_position* voisins = neighbors(scene_list[(time+u->cost+1)%accuracy],u->node,height,width);
         bool have_neighbors = false;
 
         for(int i = 0; i<voisins->size;i++){
             position* elt = voisins->tab[i];
-            if(!(is_in_stack(elt,u->cout+1,closedList) ||
-                 is_in_priority(openList,elt,u->cout+1))){
+            if(!(is_in_stack(elt,u->cost+1,closedList) ||
+                 is_in_priority(openList,elt,u->cost+1))){
                 have_neighbors = true;
                 elt = copy_position(elt);
                 int d = range(&end,elt);
@@ -83,7 +83,7 @@ position* A_star(scene_object** scene_list, int time,int accuracy, position* def
                 }
                 tree_node* new_way = new_tree_node(*elt,start,u->way);
                 add_next_tree_node(u->way,new_way);
-                data* v = new_data(u->cout+1+d,elt,new_way,u->cout+1);
+                data* v = new_data(u->cost+1+d,elt,new_way,u->cost+1);
                 insert(v,openList);
             }
         }
@@ -91,7 +91,7 @@ position* A_star(scene_object** scene_list, int time,int accuracy, position* def
             delete_tree_node(u->way);//relieves memory
         }
         delete_list_position(voisins);
-        enstack(new_stack_elt(copy_position(u->node),u->cout),closedList);
+        enstack(new_stack_elt(copy_position(u->node),u->cost),closedList);
         delete_data(u);
     }
     return NULL;

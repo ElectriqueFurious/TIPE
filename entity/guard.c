@@ -85,7 +85,7 @@ void behave(guard_list* guards, scene_object* scene, int time){
     scene_init(scene,scene->init);
     int* leader = find_leaders(guards);
     if(time == 0){
-        arange_gards(guards);
+        arange_guards(guards);
     }
     for(int i=0;i<guards->nb;i++){
         guard* guard = guards->tab[i];
@@ -93,7 +93,7 @@ void behave(guard_list* guards, scene_object* scene, int time){
         scene->time = time;
         draw_cone_with_cross(guard->pos,VISION_DISTANCE,
             guard->angle,VISION_FIELD,scene,guards->color,guards->color2);
-        clean_holl(scene,guards->color,guards->color2);
+        clean_hole(scene,guards->color,guards->color2);
     }
     // free(leader);
 }
@@ -228,7 +228,7 @@ int* find_leaders(guard_list* guards){
     return classe;
 }
 
-void _guards_colone(guard_list* guards, int* res, position* tmp){
+void _guards_column(guard_list* guards, int* res, position* tmp){
     for(int i=0; i<guards->nb; i++){
         float min_range = range(guards->tab[i]->pos,&tmp[0]);
         for(int j=1; j<guards->nb;j++){
@@ -247,19 +247,19 @@ void _swap_guard(guard** tab, int i, int j){
     tab[j] = tmp;
 }
 
-void arange_gards(guard_list* guards){
+void arange_guards(guard_list* guards){
     int size = guards->nb;
-    int* colone = calloc(size,sizeof(int));
+    int* column = calloc(size,sizeof(int));
     position* tmp = malloc(size*sizeof(position));
     bool* is_use = calloc(size,sizeof(bool));
     for(int i=0; i<size; i++){
         tmp[i].x = (int)(i*(double)WIDTH/size);
         tmp[i].y = HEIGHT/2;
     }
-    _guards_colone(guards,colone,tmp);
+    _guards_column(guards,column,tmp);
     for(int i=0; i<size; i++){
         for(int j=0; j<size; j++){
-            int k = (colone[i]+j)%size;
+            int k = (column[i]+j)%size;
             if(!is_use[k]){
                 is_use[k] = true;
                 _swap_guard(guards->tab,i,k);
@@ -268,7 +268,7 @@ void arange_gards(guard_list* guards){
         }
     }
     free(tmp);
-    free(colone);
+    free(column);
     free(is_use);
 }
 

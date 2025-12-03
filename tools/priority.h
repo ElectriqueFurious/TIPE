@@ -6,14 +6,14 @@
 
 typedef struct{
     int prio;
-    int cout;
+    int cost;
     position* node;
     tree_node* way;
 }data;
 
 typedef struct {
     int size;
-    data** tas;
+    data** heap;
 } priority_list;
 
 
@@ -29,7 +29,7 @@ int choose_son(int,priority_list*);
 void percolate_down(int,priority_list*);
 
 void insert(data*,priority_list*);
-data* remove_rac(priority_list*);
+data* remove_root(priority_list*);
 
 bool is_in_priority(priority_list*,position*,int);
 

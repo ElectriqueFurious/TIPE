@@ -1,7 +1,7 @@
 #include "../entity/position.h"
 #include "../scene/scene.h"
 
-void clean_holl1(scene_object* scene,int color){
+void clean_hole(scene_object* scene,int color){
     for(int i=0;i<scene->height;i++){
         for(int j=0;j<scene->width;j++){
             if(scene->grid[i][j]!=color){

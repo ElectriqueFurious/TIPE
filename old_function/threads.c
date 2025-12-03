@@ -23,7 +23,7 @@ void* multicore_A_star(void* args){
         data* u;
         bool is_empty = empty_priority_list(openList); 
         if(!is_empty){
-            u = openList->tas[1];
+            u = openList->heap[1];
             if(u->way != NULL && u->way->start != NULL){
                 end.x = u->way->start->pos.x;
             }
@@ -31,25 +31,25 @@ void* multicore_A_star(void* args){
                 end.x = default_end->x;
             }
 
-            if((u->node->x == end.x && u->node->y == end.y) || u->cout >= accuracy-1){
+            if((u->node->x == end.x && u->node->y == end.y) || u->cost >= accuracy-1){
                 position* res = copy_position(&(u->way->end->pos));
                 pthread_mutex_unlock(m_prio);
 
                 pthread_exit((void*)res);
         }
         
-        u = remove_rac(openList);
+        u = remove_root(openList);
         }
         pthread_mutex_unlock(m_prio);
 
         if(!is_empty){
-            list_position* voisins = neighbors(scene_list[(time+u->cout+1)%accuracy],u->node,height,width);
-            for(int i = 0; i<voisins->size;i++){
-                position* elt = voisins->tab[i];
+            list_position* neighbore = neighbors(scene_list[(time+u->cost+1)%accuracy],u->node,height,width);
+            for(int i = 0; i<neighbore->size;i++){
+                position* elt = neighbore->tab[i];
                 
                 pthread_mutex_lock(m_prio);
-                bool condition = !(is_in_stack(elt,u->cout+1,closedList) || 
-                    is_in_priority(openList,elt,u->cout+1));
+                bool condition = !(is_in_stack(elt,u->cost+1,closedList) || 
+                    is_in_priority(openList,elt,u->cost+1));
                 pthread_mutex_unlock(m_prio);
 
                 if(condition){
@@ -57,7 +57,7 @@ void* multicore_A_star(void* args){
                     int d = range(&end,elt);
                     queue_position* new_way = copy_queue(u->way);
                     enqueue(new_way,new_queue_elt(*elt));
-                    data* v = new_data(u->cout+1+d,elt,new_way,u->cout+1);
+                    data* v = new_data(u->cost+1+d,elt,new_way,u->cost+1);
 
                     pthread_mutex_lock(m_prio);
                     insert(v,openList);
@@ -65,10 +65,10 @@ void* multicore_A_star(void* args){
                 }
             }
 
-            delete_list_position(voisins);
+            delete_list_position(neighbore);
 
             pthread_mutex_lock(m_stack);
-            enstack(new_stack_elt(copy_position(u->node),u->cout),closedList);
+            enstack(new_stack_elt(copy_position(u->node),u->cost),closedList);
             pthread_mutex_unlock(m_stack);
 
             delete_data(u);

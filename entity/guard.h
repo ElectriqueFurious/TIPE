@@ -61,7 +61,7 @@ void guard_move_to(guard*,position,scene_object*);
 void guard_natural_move_to(guard*,position,scene_object*);
 
 int* find_leaders(guard_list*);
-void arange_gards(guard_list*);
+void arange_guards(guard_list*);
 
 void nothing(guard*);
 void rotation(guard*);
